@@ -1,0 +1,8 @@
+CREATE TABLE supplements (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    visit_id INT UNSIGNED NOT NULL,
+    type ENUM('VITAMIN_A','DEWORMING','IRON','MNP','OTHER') NOT NULL,
+    dose VARCHAR(100) NOT NULL,
+    date_given DATE NOT NULL,
+    CONSTRAINT supplements_visit_fk FOREIGN KEY (visit_id) REFERENCES visits(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

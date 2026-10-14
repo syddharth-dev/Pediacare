@@ -1,0 +1,28 @@
+Options -Indexes
+DirectoryIndex index.php
+
+# Keep these values in sync with Core/SecurityHeaders.php.
+# Both header tables are handled to avoid duplicates from PHP and Apache.
+Header onsuccess unset X-Frame-Options
+Header always set X-Frame-Options "DENY"
+Header onsuccess unset X-Content-Type-Options
+Header always set X-Content-Type-Options "nosniff"
+Header onsuccess unset Referrer-Policy
+Header always set Referrer-Policy "same-origin"
+Header onsuccess unset Content-Security-Policy
+Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+
+<FilesMatch "(?i)^(?!index\.php$).*\.php$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+RewriteEngine On
+RewriteRule ^(?!index\.php$).*\.php(?:/|$) - [F,END,NC]
+RewriteRule ^index\.php$ - [END]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^assets/ - [END]
+RewriteRule ^ index.php [END]
